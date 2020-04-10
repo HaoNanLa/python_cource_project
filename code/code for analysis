@@ -8,14 +8,14 @@ import json
 import pandas as pd 
 from pandasql import sqldf
 
-with open('/Users/suzannezhen/Documents/Python/Project/US_category_id.json') as f:
+with open('data/US_category_id.json') as f:
     cat_data = json.load(f)
     ID = [int(x.get('id')) for x in cat_data.get('items')]
     category = [x.get('snippet').get('title')for x in cat_data.get('items')]
     category_id_dict = dict(zip(ID, category))
     #print(category_id_dict)
     
-vid_data_df = pd.read_csv('/Users/suzannezhen/Documents/Python/Project/USvideos.csv')
+vid_data_df = pd.read_csv('data/USvideos.csv')
 
 vid_data_df = vid_data_df.drop(['video_id', 'tags','thumbnail_link', 'description' ],axis=1)
 vid_data_df['category_name'] = vid_data_df['category_id'].map(category_id_dict)
