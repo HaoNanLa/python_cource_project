@@ -16,12 +16,11 @@ with open('data/US_category_id.json') as f:
     category_id_dict = dict(zip(ID, category))
     #print(category_id_dict)
     
-vid_data_df = pd.read_csv('data/USvideos.csv')
-
+vid_data_df = pd.read_csv('data/USvideos.csv', parse_dates = ['publish_time'])
 vid_data_df = vid_data_df.drop(['video_id', 'tags','thumbnail_link', 'description' ],axis=1)
 vid_data_df['category_name'] = vid_data_df['category_id'].map(category_id_dict)
 vid_data_df['trending_date'] = vid_data_df['trending_date'].apply(lambda x: dt.datetime.strptime(x,'%y.%d.%m'))
-vid_data_df['publish_time'] = pd.to_datetime(vid_data_df['publish_time']).apply(lambda x: x.date())
+#print(vid_data_df.isnull().sum())
 #print(vid_data_df)
 
 print(sqldf("SELECT COUNT(*), category_name FROM vid_data_df group by category_id;", locals()))
